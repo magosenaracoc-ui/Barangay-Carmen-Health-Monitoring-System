@@ -1,0 +1,181 @@
+CREATE DATABASE IF NOT EXISTS `barangay_carmen_db`
+DEFAULT CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+USE `barangay_carmen_db`;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS `appointments`;
+DROP TABLE IF EXISTS `consultations`;
+DROP TABLE IF EXISTS `health_records`;
+DROP TABLE IF EXISTS `patients`;
+DROP TABLE IF EXISTS `services`;
+DROP TABLE IF EXISTS `users`;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- =====================================================
+-- USERS
+-- =====================================================
+
+CREATE TABLE `users` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(50) NOT NULL,
+    `password` VARCHAR(100) NOT NULL,
+    `role` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `users` (`username`, `password`, `role`) VALUES
+('admin', 'admin123', 'ADMIN'),
+('staff', 'staff123', 'STAFF');
+
+-- =====================================================
+-- PATIENTS
+-- =====================================================
+
+CREATE TABLE `patients` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `patient_id` VARCHAR(20) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `age` INT(11) NOT NULL,
+    `sex` VARCHAR(10) NOT NULL,
+    `gender` VARCHAR(10) NOT NULL,
+    `contact` VARCHAR(30) DEFAULT NULL,
+    `status` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `patient_id` (`patient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `patients`
+(`patient_id`, `name`, `age`, `sex`, `gender`, `contact`, `status`)
+VALUES
+('P009', 'Miguel Santos', 39, 'M', 'M', '0999-888-9999', 'Active'),
+('P011', 'Marque Jeme', 20, 'M', 'M', '0905-880-760', 'Active'),
+('P012', 'Lebron James', 23, 'M', 'M', '0905-880-0760', 'Active'),
+('P0013', 'Ricky Braga', 20, 'F', 'F', '0909-000-8890', 'Active');
+
+-- =====================================================
+-- APPOINTMENTS
+-- =====================================================
+
+CREATE TABLE `appointments` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `patient_name` VARCHAR(100) NOT NULL,
+    `time` VARCHAR(30) DEFAULT NULL,
+    `purpose` VARCHAR(100) DEFAULT NULL,
+    `status` VARCHAR(30) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `appointments`
+(`patient_name`, `time`, `purpose`, `status`)
+VALUES
+('Jose Ramirez', '03:00 PM', 'Follow-up', 'Pending'),
+('Elena Cruz', '04:00 PM', 'General Check-up', 'Rescheduled'),
+('Miguel Santos', '04:30 PM', 'Blood Pressure Check', 'Confirmed'),
+('Angela Flores', '05:00 PM', 'Health Monitoring', 'Pending'),
+('Marque Jeme', '09:30 AM', 'Medicine', 'Rescheduled'),
+('Ricky Braga', '10:30', 'Medicine', 'Pending');
+
+-- =====================================================
+-- CONSULTATIONS
+-- =====================================================
+
+CREATE TABLE `consultations` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `patient_name` VARCHAR(100) NOT NULL,
+    `date` VARCHAR(30) NOT NULL,
+    `reason` VARCHAR(255) DEFAULT NULL,
+    `height` VARCHAR(20) DEFAULT NULL,
+    `weight` VARCHAR(20) DEFAULT NULL,
+    `blood_pressure` VARCHAR(20) DEFAULT NULL,
+    `temperature` VARCHAR(20) DEFAULT NULL,
+    `heart_rate` VARCHAR(20) DEFAULT NULL,
+    `status` VARCHAR(20) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `consultations`
+(`patient_name`, `date`, `reason`, `height`, `weight`,
+ `blood_pressure`, `temperature`, `heart_rate`, `status`)
+VALUES
+('Jose Ramirez', 'May 17, 2026', 'Cough', '169 cm', '68 kg',
+ '122 / 80', '36.7 °C', '79 bpm', 'Ongoing'),
+
+('Elena Cruz', 'May 17, 2026', 'Health Monitoring', '157 cm', '54 kg',
+ '116 / 75', '36.4 °C', '75 bpm', 'Completed'),
+
+('Miguel Santos', 'May 16, 2026', 'Blood Pressure Check', '171 cm', '73 kg',
+ '128 / 84', '36.6 °C', '83 bpm', 'Completed'),
+
+('Angela Flores', 'May 16, 2026', 'Follow-up', '159 cm', '57 kg',
+ '117 / 77', '36.5 °C', '78 bpm', 'Ongoing'),
+
+('Marque Jeme', 'May 20, 2026', 'Fever', '173', '49',
+ '', '', '', 'Ongoing'),
+
+('Lebron James', 'October 06, 2026', 'Check-up', '223', '63',
+ '', '', '', 'Ongoing'),
+
+('Ricky Braga', 'May 20, 2026', 'Fever', '189', '46',
+ '', '', '', 'Ongoing');
+
+-- =====================================================
+-- HEALTH RECORDS
+-- =====================================================
+
+CREATE TABLE `health_records` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `patient_name` VARCHAR(100) NOT NULL,
+    `date` VARCHAR(30) DEFAULT NULL,
+    `height` VARCHAR(20) DEFAULT NULL,
+    `weight` VARCHAR(20) DEFAULT NULL,
+    `blood_pressure` VARCHAR(20) DEFAULT NULL,
+    `temperature` VARCHAR(20) DEFAULT NULL,
+    `heart_rate` VARCHAR(20) DEFAULT NULL,
+    `status` VARCHAR(20) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `health_records`
+(`patient_name`, `date`, `height`, `weight`,
+ `blood_pressure`, `temperature`, `heart_rate`, `status`)
+VALUES
+('Jose Ramirez', 'May 17, 2026', '169 cm', '68 kg',
+ '122 / 80', '36.7 °C', '79 bpm', 'Active'),
+
+('Elena Cruz', 'May 17, 2026', '157 cm', '54 kg',
+ '116 / 75', '36.4 °C', '75 bpm', 'Completed'),
+
+('Miguel Santos', 'May 16, 2026', '171 cm', '73 kg',
+ '128 / 84', '36.6 °C', '83 bpm', 'Completed'),
+
+('Angela Flores', 'May 16, 2026', '159 cm', '57 kg',
+ '117 / 77', '36.5 °C', '78 bpm', 'Active'),
+
+('Marque Jeme', 'May 20, 2026', '173', '49',
+ 'N/A', 'N/A', 'N/A', 'Ongoing'),
+
+('Lebron James', 'October 06, 2026', '223', '63',
+ 'N/A', 'N/A', 'N/A', 'Ongoing'),
+
+('Ricky Braga', 'May 20, 2026', '189', '46',
+ 'N/A', 'N/A', 'N/A', 'Ongoing');
+
+-- =====================================================
+-- SERVICES
+-- =====================================================
+
+CREATE TABLE `services` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `service_id` VARCHAR(20) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `status` VARCHAR(30) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `service_id` (`service_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+COMMIT;
